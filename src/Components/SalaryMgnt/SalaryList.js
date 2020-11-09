@@ -30,7 +30,8 @@ class SalaryList extends Component {
             holidayWage:'',
             otType:'',
             retension:'',
-            compensation:''
+            compensation:'',
+            user:localStorage.getItem('role')
         }
     }
     handleClose = () => {
@@ -131,9 +132,10 @@ class SalaryList extends Component {
            });
     }
     render() {
-        const{isLoading,salaries,isEdit}=this.state;
+        const{user,isLoading,salaries,isEdit}=this.state;
         return (
             <>
+            {user==="admin"||"Finance"?(
               <div className="viewSites">
                 <div className="viewSitesTable">
                 <Table striped bordered hover>   
@@ -212,7 +214,12 @@ class SalaryList extends Component {
                 </tbody>
                 </Table>
                 </div>
-                </div>
+                </div>):
+                (
+                    <div>
+                        <h4>You are not authorized!</h4>
+                    </div>
+                )}
                 {!isEdit? 
                 <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>

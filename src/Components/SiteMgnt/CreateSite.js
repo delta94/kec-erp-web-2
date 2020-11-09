@@ -16,11 +16,12 @@ class CreateSite extends Component{
 			startDate:'',
 			endDate:'',
 			lunchTime:'',
-			startTime:'',
+			startTime:'00:00:00',
 			endTime:'',
 			bufferStartTime:'',
 			bufferEndTime:'',
-			salaryDayStructure:''
+            salaryDayStructure:'',
+            user:localStorage.getItem('role')
 		}
 	}
 	
@@ -45,11 +46,11 @@ class CreateSite extends Component{
 			site_engineer:this.state.siteEngineer,
 			start_date:this.state.startDate,
 			end_date:this.state.endDate,
-			lunch_time:this.state.lunchTime,
-			start_time:this.state.startTime,
-			end_time:this.state.endTime,
-			start_buffer:this.state.bufferStartTime,
-			end_buffer:this.state.bufferEndTime,
+			lunch_time:this.state.lunchTime+':00',
+			start_time:this.state.startTime+':00',
+			end_time:this.state.endTime+':00',
+			start_buffer:this.state.bufferStartTime+':00',
+			end_buffer:this.state.bufferEndTime+':00',
 			salary_structure:this.state.salaryDayStructure
 		};
 
@@ -59,13 +60,16 @@ class CreateSite extends Component{
   }})
 		.then(res => {
 		  console.log(res);
-		  alert(res.data.message);
+          alert(res.data.message);
+          window.location.reload();
 		});
 
 	}
     render(){
+        const {user}=this.state
         return(
             <>
+            {(user === "admin" || "SiteAssitent")?(
                 <div className="createSite">
                 <div className="createSiteForm">
                     <Form onSubmit={this.handleSubmit}>
@@ -116,7 +120,7 @@ class CreateSite extends Component{
                     </Form.Group>
                     <Form.Group as={Col} controlId="formBasicStartTime">
                     <Form.Label>Shift Start Time</Form.Label>
-                    <Form.Control type="time" placeholder="Enter Start Time" name="startTime" value={this.state.startTime} onChange={this.handleChange} required/>
+                    <Form.Control type="time" name="startTime" value={this.state.startTime} onChange={this.handleChange} required/>
                     </Form.Group>
                     </Form.Row>
                     <Form.Row>
@@ -144,7 +148,11 @@ class CreateSite extends Component{
                     </Button>
                     </Form>
                 </div>
-               </div>
+               </div>):(
+                   <div>
+                       <h4>You are not authorized!</h4>
+                   </div>
+               )}
             </>
         );
     }

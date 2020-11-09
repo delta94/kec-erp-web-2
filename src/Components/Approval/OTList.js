@@ -9,7 +9,8 @@ class OTList extends Component{
     this.state={
        date:'',
        datas:'',
-       isLoading:true
+       isLoading:true,
+       user:localStorage.getItem('role')
     }
 }
     handleChange = (e)=>{
@@ -43,9 +44,12 @@ class OTList extends Component{
         })
     }
     render(){
-        const{isLoading,date,datas}=this.state
+        const{user,isLoading,date,datas}=this.state
+      
         return(
+            
             <>
+            {user==="admin"||"SiteOperator"?(
                 <div className="otList">
                 <div className="otListForm">
                     <Form onSubmit={this.handleSubmit}>
@@ -98,8 +102,13 @@ class OTList extends Component{
                         </Table>
                         </div>
                         </div>
+        ):
+                        <div>
+                        <h4>You are not authorized!</h4>
+                        </div>}
             </>
-        );
+    
+        )
     }
 }
 export default OTList

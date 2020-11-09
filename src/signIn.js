@@ -10,13 +10,9 @@ class SignIn extends Component{
             Username:'',
             Password:'',
         }
-    
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-       
     }
     
-    handleChange(e) {
+    handleChange=(e)=> {
         let target = e.target;
         let value = target.type === 'checkbox' ? target.checked : target.value;
         let name = target.name;
@@ -28,30 +24,29 @@ class SignIn extends Component{
     componentDidMount(){
         localStorage.clear();
     }
-    handleSubmit(e) {
+    handleSubmit=(e)=> {
         e.preventDefault();
         const data={
           username :this.state.Username,
           password:this.state.Password
         };
-        console.log(data);
-       axios.post(/*'https://kunnel-erp.herokuapp.com/app1/login'*/'http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/app1/login',(data),{withCredentials:true})
+       axios.post('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/app1/login',(data),{withCredentials:true})
         .then(response => {
-          console.log(response);
-          //alert(response.data.status);
           if(response.data.status===true){
+            localStorage.setItem("username",response.data.user);
+            localStorage.setItem("token",response.data.token);
+            localStorage.setItem("role",response.data.role);
+
           this.props.handleSuccessfulAuth(response.data)
-          localStorage.setItem("username",response.data.user);
-          localStorage.setItem("token",response.data.token);
-          localStorage.setItem("usertype",response.data.usertype);
+          
           }
-         /* axios.get('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/app1/permission',{
+         axios.post('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/app1/endpoint',({role:localStorage.getItem('role')}),{
             headers:{
                 'Authorization': `Token ${localStorage.getItem('token')}`
             }
           }).then(response=>{
-              alert(response.data);
-          })*/
+             console.log("permission list :",response.data);
+          })
         })
         .catch(error=>{
             console.log("login error",error)

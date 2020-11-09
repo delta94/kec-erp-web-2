@@ -147,8 +147,8 @@ class LabourerList extends Component {
                           compensationDate:response.data.datas.compnDate,
                           blockStatus:response.data.datas.block_status,
                           retension:response.data.datas.retention,
-                          compensation:response.data.datas.compensation
-
+                          compensation:response.data.datas.compensation,
+                          DOB:response.data.datas.DOB
                       })
                        
           });
@@ -287,63 +287,19 @@ axios.get('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/SalaryStru
     monitorDate:this.state.monitorDate,
     block_status:this.state.blockStatus,
     retention:this.state.retension,
-    compensation:this.state.compensation
+    compensation:this.state.compensation,
+    DOB:this.state.DOB
     }
         axios.post('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/labourermanage/labourer/edit',data,{headers:{
         'Authorization': `token ${localStorage.getItem('token')}`
     }})
     .then(function (response) {
-        alert(response.data.message)
+        alert(response.data.messgae);
+        window.location.reload();
       })
       .catch(function () {
         alert('Error occured')
       });
-/*
-let formData = new FormData();
-    this.blockStatus();
-    formData.append("labourerid",this.state.labourerId);      
-	formData.append("name",this.state.name);
-	formData.append("address",this.state.address);
-	formData.append("aadharNumber",this.state.aadharNumber);
-	formData.append("department",this.state.department);
-	formData.append("fatherName",this.state.fatherName);
-	formData.append("ACNumber",this.state.accountNumber);
-	formData.append("branchName",this.state.branchName);
-	formData.append("IFSCNumber",this.state.IFSCCode);
-	formData.append("contact",this.state.contactNumber);
-	formData.append("bloodGroup",this.state.bloodGroup);
-	formData.append("salary_id",this.state.salaryStructure);
-	formData.append("labourerType",this.state.labourerType);
-  formData.append("skillType",this.state.skillType);
-  formData.append("wifeName",this.state.wifeName);
-  formData.append("children_number",this.state.childrenNumber);
-  formData.append("depended_father",this.state.dependedFather);
-  formData.append("depended_mother",this.state.dependedMother);
-  formData.append("site_id",this.state.siteId);
-  formData.append("wagecode",this.state.wageCode);
-  formData.append("designation",this.state.designation);
-  formData.append("bankName",this.state.bankName);
-  formData.append("compnDate",this.state.compensationDate);
-  formData.append("monitorDate",this.state.monitorDate);
-  formData.append("block_status",this.state.blockStatus);
-  formData.append("retention",this.state.retension);
-  formData.append("compensation",this.state.compensation);
-  /*formData.append("photo",this.state.photo);
-  formData.append("aadhrPhoto",this.state.aadharPhoto);
-	console.log("formdata: ",formData);
-	axios.post('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/labourermanage/labourer/edit',
-	formData,{
-	  headers: {
-    'Content-Type': 'multipart/form-data',
-    'Authorization': `Token ${localStorage.getItem('token')}`
-	  }
-	}
-  ).then(function (response) {
-	alert(response.data.message)
-  })
-  .catch(function () {
-	alert('Error occured')
-  });*/
     }
     render() {
         const{isData,labourerList,labourerData,isLoading,salaries,isSites,sites,isWages,wages} = this.state
@@ -483,7 +439,11 @@ let formData = new FormData();
                     </Form.Group>
                     </Form.Row>
                     <span className="text-red" id="aadharError">*Enter valid Aadhar number!</span>
-                    <Form.Row>    
+                    <Form.Row> 
+                    <Form.Group as={Col} controlId="formGridState">
+                    <Form.Label>Date of Birth</Form.Label>
+                    <Form.Control type="date" name="DOB" value={this.state.DOB} onChange={this.handleChange} required/>
+                    </Form.Group>   
                     <Form.Group as={Col} controlId="formBasicAadharNum">     
                     <Form.Label>Aadhar Number</Form.Label>
                     <Form.Control type="text" placeholder="Enter aadhar number" name="aadharNumber" onKeyUp={this.handleValidate} value={this.state.aadharNumber} onChange={this.handleChange} required/>

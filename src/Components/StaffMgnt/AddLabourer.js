@@ -32,6 +32,7 @@ class AddLabourer extends Component{
   formData.append("wagecode",this.state.wageCode);
   formData.append("designation",this.state.designation);
   formData.append("bankName",this.state.bankName);
+  formData.append("DOB",this.state.DOB);
 	console.log("formdata: ",formData);
 	axios.post('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/labourermanage/labourer/',
 	formData,{
@@ -41,6 +42,7 @@ class AddLabourer extends Component{
 	  }
 	}
   ).then(function (response) {
+	  console.log("labourer add res:",response);
 	alert(response.data.message)
   })
   .catch(function () {

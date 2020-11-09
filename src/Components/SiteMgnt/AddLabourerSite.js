@@ -15,7 +15,8 @@ class ViewLabourer extends Component{
 		errors:null,
         Labourers:'',
         LabourersToParse:[],
-        check:false
+        check:false,
+        user:localStorage.getItem('role')
 	}
 }
     handleSubmit=(e)=>{
@@ -83,9 +84,10 @@ class ViewLabourer extends Component{
             .catch(error=>console.log(error));
             }*/
     render(){
-        const{isLoading,isLabourer,sites,Labourers} = this.state;
+        const{user,isLoading,isLabourer,sites,Labourers} = this.state;
         return(
             <>
+            {user === "admin"||"SiteOperator"||"SiteAssitent"?(
                 <div className="viewLabourer">
                 <div className="viewLabourerTable">
                 <Form>
@@ -152,7 +154,13 @@ class ViewLabourer extends Component{
                 </Table>
                 </Form>
                 </div>
-                </div>
+                </div>):(
+                    <div>
+                        <h4>
+                            You are not authorized!
+                        </h4>
+                    </div>
+                )}
                 
             </>
         );

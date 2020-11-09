@@ -16,7 +16,8 @@ class CheckOut extends Component{
             OutTime:'00:00:00',
             responseMessage:'',
             hasConcrete:false,
-            status:true
+            status:true,
+            user:localStorage.getItem('role')
         }
     
         this.handleChange = this.handleChange.bind(this);
@@ -98,9 +99,10 @@ class CheckOut extends Component{
        
     }
     render(){
-        const{isLoading,Sites,Labourers,status,responseMessage} = this.state;
+        const{user,isLoading,Sites,Labourers,status,responseMessage} = this.state;
         return(
             <>
+             {user === "admin" || "SiteOperator" ? (
                 <div className="checkOut">
                 <div className="checkOutForm">
                     <Form onSubmit={this.handleSubmit}>
@@ -167,7 +169,11 @@ class CheckOut extends Component{
                 </p>
                 </Alert>:<div></div>}
                 </div>
-                </div>
+                </div>):(
+                  <div>
+                    <h4>You are not authorized!</h4>
+                  </div>
+                )}
             </>
         );
     }

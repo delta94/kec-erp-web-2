@@ -2,6 +2,7 @@ import React,{ Component} from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import axios from 'axios'
+
 class SignUp extends Component{
     constructor(props) {
         super(props);
@@ -14,13 +15,11 @@ class SignUp extends Component{
            Usertype:'',
            Password1:'',
            Password2:'',
-         
+           Userrole:'',
+           roles:[]
         };
-    
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleChange(e) {
+    handleChange=(e)=> {
         let target = e.target;
         let value = target.type === 'checkbox' ? target.checked : target.value;
         let name = target.name;
@@ -29,20 +28,35 @@ class SignUp extends Component{
           [name]: value
         });
     }
-    
-    handleSubmit(e) {
+    componentDidMount=()=>{
+      axios.get('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/app1/permission',{headers:{
+        'Authorization': `Token ${localStorage.getItem('token')}`
+    }})
+        .then(res => {
+          console.log(res);
+          console.log("roles:",res.data);
+          this.setState({
+            roles:res.data
+          })
+         
+        }).catch(error=>{
+          alert("Error occured:",error);
+      });
+    }
+    handleSubmit=(e)=> {
         e.preventDefault();
         const data = {
           password:this.state.Password1,
           username:this.state.Username,
           user_type:this.state.Usertype,
+          role:this.state.Userrole,
           emailid:this.state.Email,
           active:true,
           first_name:this.state.Firstname,
           last_name:this.state.Lastname
         };
       console.log(data);
-       axios.post(/*'https://kunnel-erp.herokuapp.com/app1/user'*/'http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/app1/user',(data),{headers:{
+       axios.post('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/app1/user',(data),{headers:{
         'Authorization': `Token ${localStorage.getItem('token')}`
     }})
         .then(res => {
@@ -56,7 +70,9 @@ class SignUp extends Component{
       
        }
     render(){
+      const {roles} = this.state
         return(
+          
             <>
              <div className="createSite">
                 <div className="createSiteForm">
@@ -85,6 +101,20 @@ class SignUp extends Component{
                 <Form.Label>User type</Form.Label>
                 <Form.Control type="text" placeholder="Enter usertype" name="Usertype" value={this.state.Usertype} onChange={this.handleChange} required/>
                 </Form.Group>
+                <Form.Group controlId="formBasicUserrole">
+                <Form.Label>User Role</Form.Label>
+                <Form.Control as="select" value={this.state.Userrole} name="Userrole" onChange={this.handleChange} required>
+                {roles.length?(roles.map(role=>{
+                return(
+                        <option key={role.id} value={role.role}>{role.role}</option>
+                    );
+                })
+                ):(
+                    <option></option>
+                )
+                }
+                </Form.Control>
+                </Form.Group> 
                 <Form.Group controlId="formBasicPassword1">
                 <Form.Label>Create password</Form.Label>
                 <Form.Control type="password" placeholder="Enter password" name="Password1" value={this.state.Password1} onChange={this.handleChange} required/>
@@ -95,7 +125,7 @@ class SignUp extends Component{
                 </Form.Group>
                 
                 <Button type="submit">
-                Sign-Up
+                Add User
                 </Button>
                 </Form>
                 </div>

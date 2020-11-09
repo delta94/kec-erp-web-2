@@ -21,7 +21,8 @@ class SalaryReportForm extends Component{
             wagecal:'',
             Sites:'',
             isLoading:true,
-            trailaArray:[]
+            trailaArray:[],
+            user:localStorage.getItem('role')
         }
     }
     handleEdit=(event)=>{
@@ -31,6 +32,9 @@ class SalaryReportForm extends Component{
 
     }
     saveData=()=>{
+        console.log("user:",this.state.user)
+        if(this.state.user === "admin"||"Finance"){
+            
         const tbody=document.querySelector('tbody');
         const trs=tbody.querySelectorAll('tr');
         console.log("trs",trs);
@@ -100,7 +104,10 @@ class SalaryReportForm extends Component{
               })
             }).catch(error=>{
                 alert(error);
-            }) 
+            }) }
+            else{
+                alert("You are not authorized!");
+            }
     }
 
     handleChange=(event)=>{
@@ -208,6 +215,7 @@ class SalaryReportForm extends Component{
         const{status,wages,FromDate,ToDate,siteId,Sites,isLoading}=this.state
         return(
             <>
+            
                 <div className="salaryReport">
                 <div className="SalaryReportForm">
                     <Form onSubmit={this.handleSubmit}>

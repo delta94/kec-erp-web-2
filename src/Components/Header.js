@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button'
 import InputGroup from 'react-bootstrap/InputGroup'
 import user from '../images/user.svg'
 import logout from '../images/logout.svg'
+import {NavLink} from 'react-router-dom'
+
 export const Header=()=> {
 
     return (
@@ -26,7 +28,7 @@ export const Header=()=> {
         </div>
         <div>
         <span><img src={user} className="imgHeader" alt=""/><b>Hi! {localStorage.getItem('username')}</b></span>
-        <span><img src={logout} className="imgLogout" alt=""/>Logout</span>
+        <NavLink to="/"><span><img src={logout} className="imgLogout" alt=""/>Logout</span></NavLink>
         </div>
     </div>
     )

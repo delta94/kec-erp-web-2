@@ -3,7 +3,14 @@ import Header from './Header'
 import LeftNav from './LeftNav'
 import AttendanceTable from './AttendanceTable'
 class Attendance extends Component{
+    constructor(){
+        super()
+        this.state ={
+            user:localStorage.getItem('role')
+        }
+    }
     render(){
+        const {user} = this.state
         return(
             <>
             <Header>
@@ -16,7 +23,15 @@ class Attendance extends Component{
                 <div className="activeSection">
                 <span className="text-secondary"><b>TIMESHEET / ATTENDANCE</b></span>
                 </div>
-                <AttendanceTable/>
+                {(user === "SiteOperator"||"admin"||"OperationDept")?
+                (<AttendanceTable/>)
+                :(
+                    <div>
+                        <h4>
+                            You are not authorized!
+                        </h4>
+                 </div>
+                )}
                 </div>
                 </section>
             </main>

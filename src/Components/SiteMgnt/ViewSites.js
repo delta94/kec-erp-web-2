@@ -33,7 +33,8 @@ class ViewSites extends Component{
         endTime:'',
         bufferStartTime:'',
         bufferEndTime:'',
-        salaryDayStructure:''
+        salaryDayStructure:'',
+        user:localStorage.getItem('role')
 	}
 }
     handleEditClose=()=>{
@@ -67,7 +68,14 @@ class ViewSites extends Component{
         console.log(event.target.id);
     }   
     handleChange=(e)=>{ 
-        if(e.target.checked){
+        let target = e.target;
+		let value = target.type === 'checkbox' ? target.checked : target.value;
+		let name = target.name;
+	
+		this.setState({
+		  [name]: value
+		})
+        /*if(e.target.checked){
         this.state.LabourersToParse.push(e.target.id);
         }
         if(!e.target.checked){
@@ -75,7 +83,7 @@ class ViewSites extends Component{
         }
         this.setState({
             LabourersToParse:this.state.LabourersToParse
-        })
+        })*/
     }
 	getSites(){
 		axios.get(/*'https://kunnel-erp.herokuapp.com/*/'http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/sitemanage/sites/',{headers:{
@@ -157,18 +165,19 @@ class ViewSites extends Component{
                 siteEng_id:this.state.siteEngineerId,
                 start_date:this.state.startDate,
                 end_date:this.state.endDate,
-                lunch_time:this.state.lunchTime,
-                start_time:this.state.startTime,
-                end_time:this.state.endTime,
-                start_buffer:this.state.bufferStartTime,
-                end_buffer:this.state.bufferEndTime,
+                lunch_time:this.state.lunchTime+'00',
+                start_time:this.state.startTime+'00',
+                end_time:this.state.endTime+'00',
+                start_buffer:this.state.bufferStartTime+'00',
+                end_buffer:this.state.bufferEndTime+'00',
                 salary_structure:this.state.salaryDayStructure
             }
             axios.post('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/sitemanage/sites/edit',data,{headers:{
         'Authorization': `token ${localStorage.getItem('token')}`
     }})
     .then(function (response) {
-        alert(response.data.messgae)
+        alert(response.data.messgae);
+        window.location.reload();
       })
       .catch(function () {
         alert('Error occured')
@@ -176,9 +185,10 @@ class ViewSites extends Component{
 
         }   
     render(){
-        const{isLoading,sites,Labourers} = this.state;
+        const{user,isLoading,sites,Labourers} = this.state;
         return(
             <>
+            {(user !== "Finance") ? (
                 <div className="viewSites">
                 <div className="viewSitesTable">
                 <Table striped bordered hover>   
@@ -229,7 +239,11 @@ class ViewSites extends Component{
                 </tbody>
                 </Table>
                 </div>
-                </div>
+                </div>):(
+                    <div>
+                        <h4>Yuo are not auhtorized!</h4>
+                    </div>
+                )}
                 <Modal show={this.state.show} onHide={this.handleClose}>
                 <Modal.Header closeButton>
                 <Modal.Title>Labourer List</Modal.Title>

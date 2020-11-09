@@ -25,10 +25,6 @@ class UserMgnt extends Component{
                                 <Tab eventKey="createUser" title="Create User">
                                 <CreateUser/>
                                 </Tab>
-                                <Tab eventKey="addPermission" title="Add Permission">
-                                
-                                </Tab>
-                                
                                 <Tab eventKey="" title="" disabled>
                                 
                                 </Tab>

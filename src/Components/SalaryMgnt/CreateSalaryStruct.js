@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Col from 'react-bootstrap/Col'
 import axios from 'axios'
+
 class CreateSalaryStructForm extends Component{
    constructor(){
        super();
@@ -23,7 +24,8 @@ class CreateSalaryStructForm extends Component{
         holidayWage:'',
         OTtype:'',
         retension:'',
-        compensation:''
+        compensation:'',
+        user:localStorage.getItem('role')
        }
    }
    handleChange=(event)=>{
@@ -67,8 +69,10 @@ class CreateSalaryStructForm extends Component{
   
    }
     render(){
+            const{user}=this.state
         return(
             <>
+            {user === "admin"?(
                 <div className="salaryStructure">
                 <div className="salaryStructureForm">
                     <Form onSubmit={this.handleSubmit}>
@@ -216,7 +220,11 @@ class CreateSalaryStructForm extends Component{
                     </Form>
                 </div>
                
-                </div>
+                </div>):(
+                        <div>
+                                <h4>You are not authorized!</h4>
+                        </div>
+                )}
             </>
         );
     }

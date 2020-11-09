@@ -15,7 +15,8 @@ class CheckIn extends Component{
             InTime:'00:00:00',
             Date:'YYY-MM-DD',
             responseMessage:'',
-            status:true
+            status:true,
+            user:localStorage.getItem('role')
         }
     
         this.handleChange = this.handleChange.bind(this);
@@ -93,9 +94,10 @@ class CheckIn extends Component{
        
     }
     render(){
-        const{isLoading,Sites,Labourers,responseMessage,status} = this.state;
+        const{user,isLoading,Sites,Labourers,responseMessage,status} = this.state;
         return(
             <>
+            {user === "admin" || "SiteOperator" ? (
                 <div className="checkIn">
                 <div className="checkInForm">
                     <Form onSubmit={this.handleSubmit}>
@@ -153,7 +155,11 @@ class CheckIn extends Component{
                 </p>
                 </Alert>:<div></div>}
                 </div>
-                </div>
+                </div>):(
+                  <div>
+                    <h4>You are not authorized!</h4>
+                  </div>
+                )}
             </>
         );
     }

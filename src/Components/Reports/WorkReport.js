@@ -13,7 +13,8 @@ class WorkReport extends Component{
             ToDate:'YYYY-MM-DD',
             FromDate:'YYYY-MM-DD',
             Reports:[],
-            status:true
+            status:true,
+            user:localStorage.getItem('role')
         }
     
         this.handleChange = this.handleChange.bind(this);
@@ -70,9 +71,10 @@ class WorkReport extends Component{
     }
     
     render(){
-        const{isLoading,Sites,status,Reports} = this.state;
+        const{user,isLoading,Sites,status,Reports} = this.state;
         return(
             <>
+            {user === "admin" || "SiteOperator"?(
                 <div className="workReport">
                 <div className="workReportForm">
                     <Form onSubmit={this.handleSubmit}>
@@ -144,7 +146,11 @@ class WorkReport extends Component{
                 </tbody>
                 </Table>
                 </div>
-                </div>
+                </div>):(
+                    <div>
+                        <h4>You are not authorized!</h4>
+                    </div>
+                )}
             </>
         );
     }
