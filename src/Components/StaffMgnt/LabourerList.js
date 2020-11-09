@@ -50,7 +50,8 @@ class LabourerList extends Component {
             isWages:true,
             ID:'',
             photo:'',
-            aadharPhoto:''
+            aadharPhoto:'',
+            user:localStorage.getItem('role')
         }
     }
     handleSelect=(e)=>{
@@ -110,6 +111,7 @@ class LabourerList extends Component {
         
     }   
     handleShowEdit = (e) =>{
+        if(this.state.user === ("admin"||"SiteOperator")){
         this.setState({
             ID:e.target.id
         })          
@@ -153,7 +155,10 @@ class LabourerList extends Component {
                        
           });
           
-         
+        }
+        else{
+            alert("Ypu are not authorized!");
+        }
     }
     componentWillMount(){
         axios.get('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/labourermanage/labourer/',{headers:{
@@ -302,9 +307,10 @@ axios.get('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/SalaryStru
       });
     }
     render() {
-        const{isData,labourerList,labourerData,isLoading,salaries,isSites,sites,isWages,wages} = this.state
+        const{user,isData,labourerList,labourerData,isLoading,salaries,isSites,sites,isWages,wages} = this.state
         return (
             <>
+            {(user !== "Finance")?(
             <div className="content">
                 <div className="attendanceTable">
                 <Table striped bordered hover>  
@@ -350,7 +356,11 @@ axios.get('http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/SalaryStru
                 </tbody>
                 </Table>
                 </div>
-                </div>   
+                </div>):(
+                    <div>
+                        <h4>You are not authorized!</h4>
+                    </div>
+                )}   
                 <Modal show={this.state.show} onHide={this.handleClose} size="lg">
                 <Modal.Header closeButton>
                 <Modal.Title>Labourer Profile</Modal.Title>

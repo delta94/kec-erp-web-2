@@ -9,7 +9,14 @@ import LabourerList from './LabourerList'
 import AddSubContractor from './AddSubContractor'*/
 import WorkHistory from './LabourerWorkHistory'
 class StaffMgnt extends Component{
+    constructor(){
+        super()
+        this.state={
+            user:localStorage.getItem('role')
+        }
+    }
     render(){
+        const {user} = this.state
         return(
             <>
             <Header>
@@ -28,10 +35,22 @@ class StaffMgnt extends Component{
                                 <LabourerList/>
                                 </Tab>
                                 <Tab eventKey="addLabourer" title="Add Labourer">
-                                <AddLabourer/>    
+                                {(user === "admin" || "SiteAssitent")?(    
+                                <AddLabourer/>
+                                ):(
+                                    <div>
+                                        <h4>You are not authorized!</h4>
+                                    </div>
+                                )}    
                                 </Tab>  
                                 <Tab eventKey="workHistory" title="Labourer Work History">
+                                {(user != "Finance")?(    
                                 <WorkHistory/>
+                                ):(
+                                    <div>
+                                        <h4>You are not authorized!</h4>
+                                    </div>
+                                )}    
                                 </Tab>
                                 <Tab eventKey="" title="" disabled>
                                 

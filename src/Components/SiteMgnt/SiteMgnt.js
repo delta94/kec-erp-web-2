@@ -7,7 +7,9 @@ import CreateSite from './CreateSite'
 import ViewSites from './ViewSites'
 import ViewLabourer from './AddLabourerSite'
 class SiteMgnt extends Component{
+    
     render(){
+        
         return(
             <>
             <Header>
