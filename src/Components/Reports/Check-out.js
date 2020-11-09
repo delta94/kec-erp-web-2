@@ -17,7 +17,8 @@ class CheckOut extends Component{
             responseMessage:'',
             hasConcrete:false,
             status:true,
-            user:localStorage.getItem('role')
+            user:localStorage.getItem('role'),
+            reson:''
         }
     
         this.handleChange = this.handleChange.bind(this);
@@ -71,7 +72,8 @@ class CheckOut extends Component{
           siteid:this.state.SiteId,
           time:this.state.OutTime+":00",
           date:this.state.Date,
-          concreteday:this.state.hasConcrete
+          reson:this.state.reson
+          //concreteday:this.state.hasConcrete
         };
         console.log(data);
        axios.post(/*'https://kunnel-erp.herokuapp.com/*/'http://ec2-13-127-182-134.ap-south-1.compute.amazonaws.com/attendancemanage/checkout',(data),{headers:{
@@ -81,7 +83,7 @@ class CheckOut extends Component{
           console.log(res);
           if(res.status===200){
           this.setState({
-            responseMessage:{status:res.data.status+"!",
+            responseMessage:{status:res.data.details+"!",
                              intime:"In Time : "+res.data.intime,
                              outtime:"Out Time : "+res.data.outime,
                              totalworkhours:"Total Work Hours : "+res.data.totalworkhours
@@ -146,9 +148,13 @@ class CheckOut extends Component{
                     <Form.Label> Date</Form.Label>
                     <Form.Control type="date" placeholder="Select any date" name="Date" value={this.state.Date} onChange={this.handleChange} required/>
                     </Form.Group>
-                    <Form.Group controlId="formHorizontalCheck">
-                    <Form.Check label="Has Concrete" name="hasConcrete" value={this.state.hasConcrete} onChange={this.handleChange}/>
+                    <Form.Group controlId="formBasicReson">
+                    <Form.Label>Reason</Form.Label>
+                    <Form.Control type="text" name="reson" value={this.state.reson} onChange={this.handleChange} required/>
                     </Form.Group>
+                   {/* <Form.Group controlId="formHorizontalCheck">
+                    <Form.Check label="Has Concrete" name="hasConcrete" value={this.state.hasConcrete} onChange={this.handleChange}/>
+                  </Form.Group>*/}
                     <Button variant="primary" type="submit">
                     Submit
                     </Button>

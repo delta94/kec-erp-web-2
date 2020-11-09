@@ -16,7 +16,8 @@ class CheckIn extends Component{
             Date:'YYY-MM-DD',
             responseMessage:'',
             status:true,
-            user:localStorage.getItem('role')
+            user:localStorage.getItem('role'),
+            reson:''
         }
     
         this.handleChange = this.handleChange.bind(this);
@@ -67,7 +68,8 @@ class CheckIn extends Component{
           labourerid :this.state.LabourerId,
           siteid:this.state.SiteId,
           time:this.state.InTime+":00",
-          date:this.state.Date
+          date:this.state.Date,
+          reson:this.state.reson
         };
         console.log(this.state.LabourerId);
         console.log(data);
@@ -77,7 +79,7 @@ class CheckIn extends Component{
         .then(res => {
           if(res.data.status===true){
             this.setState({
-              responseMessage:res.data.deatils+"!",
+              responseMessage:res.data.details+"!",
               status:false
             })
           }
@@ -140,6 +142,10 @@ class CheckIn extends Component{
                     <Form.Group controlId="formBasicDate">
                     <Form.Label> Date</Form.Label>
                     <Form.Control type="date" placeholder="Select any date" name="Date" value={this.state.Date} onChange={this.handleChange} required/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicReson">
+                    <Form.Label>Reason</Form.Label>
+                    <Form.Control type="text" name="reson" value={this.state.reson} onChange={this.handleChange} required/>
                     </Form.Group>
                     <Button variant="primary" type="submit">
                     Submit
